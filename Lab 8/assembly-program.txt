@@ -1,0 +1,31 @@
+//lab 8 - part 6 
+
+MAIN: 
+//setting up everything 
+mvt r0, #0x10; //LED Address 
+mvt r1, #0x30 //Switch Address 
+mv r3, #0 //r3 is the counter 
+
+LOOP: 
+st r3, [r0] //write to the LEDS
+add r3, #1 //add to the counter 
+
+//Delay loop before writing to the switches again 
+SET_SWITCHES: 
+ld r5, [r1] //read from the switches 
+add r5, #1 //add 1, just in case the switches are 0 
+
+//outer delay loop for switches 
+OUTER_DELAY: 
+sub r5, #1
+beq LOOP 
+b INNER 
+
+INNER: 
+mvt r2, #10
+
+
+INNER_DELAY: 
+sub r2, #1
+beq OUTER_DELAY 
+b INNER_DELAY 
